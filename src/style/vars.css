@@ -1,0 +1,9 @@
+:root   {
+    --font-family: Inter, arial;
+
+
+/* colors */
+--main-color: #000;
+--secondary-color:#9d9d9d;
+--button-color:#8bb43c;
+}

@@ -1,0 +1,21 @@
+.container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+    background-color: #FFF;
+}
+
+.title {
+    margin: 0;
+    font-family: var(--font-family);
+    font-weight: 700;
+    font-size: 32px;
+    color: #000;
+}
+
+.subtitle {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 16px;
+    color: #000;
+}

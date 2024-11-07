@@ -1,0 +1,36 @@
+* {
+    box-sizing: inherit;
+}
+
+html {
+    box-sizing: border-box;
+    height: 100%;
+
+}
+
+body {
+    font-family: var(--font-family);
+    height: 100%;
+    margin: 0;
+    background-color: #e7f6FF;
+}
+
+#root {
+    padding-top: 85px;;
+    height: 100%;
+}
+
+a {
+    font-family: inherit;
+    text-decoration: none;
+    color: inherit;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+
+}
+.container {
+   background-color: #FFF;
+}

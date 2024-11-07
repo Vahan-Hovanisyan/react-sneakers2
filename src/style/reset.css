@@ -1,0 +1,12 @@
+.buttonReset {
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.listReset {
+    padding: 0;
+    list-style: none;
+    
+}

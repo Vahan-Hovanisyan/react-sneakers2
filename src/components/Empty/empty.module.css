@@ -1,0 +1,66 @@
+.cardEmpty {
+    width: 285px;
+    height: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.emptyImg {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+}
+
+.emptyTitle {
+    composes: title from global;
+    font-family: var(--font-family);
+    font-weight: 600;
+    font-size: 22px;
+    color: #000;
+    padding: 0;
+    margin-bottom: 10px;
+}
+
+.emptyText {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    text-align: center;
+    color: #000;
+    margin-bottom: 40px;
+    opacity: 0.4;
+}
+
+.buttonBack {
+    composes: buttonReset from global;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #9dd458;
+    padding: 18px 0 18px;
+    border-radius: 18px;
+    font-family: var(--font-family);
+    font-weight: 600;
+    font-size: 16px;
+    color: #fff;
+    width: 245px;
+    transition: all 0.3s ease;
+}
+
+.arrowLeft {
+    position: absolute;
+    right: 205px;
+    top: 22px;
+    width: 16px;
+    height: 14px;
+    transition: transform 0.3s ease;
+}
+
+.buttonBack:hover .arrowLeft {
+    transform: translateX(-10px);
+}

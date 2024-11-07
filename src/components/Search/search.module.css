@@ -1,0 +1,19 @@
+.label {
+    padding: 15px 15px 15px 18px;
+    width: 250px;
+    border: 1px solid var(--secondary-color);
+    display: inline-flex;
+    border-radius: 10px;
+    gap: 10px;
+}
+
+.icon {
+    width: 15px;
+    height: 15px;
+}
+
+.input {
+    background: transparent;
+    border: none;
+    outline: none;
+}
