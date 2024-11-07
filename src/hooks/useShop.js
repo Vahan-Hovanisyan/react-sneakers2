@@ -3,7 +3,7 @@ import { fetcher } from "../helper/fetcher";
 import { useSWRConfig } from "swr";
 export const useShop = () => {
     const { mutate } = useSWRConfig()
-    const { data, error, } = useSWR("http://localhost:3000/shop", fetcher);
+    const { data, error, } = useSWR("https://sneakers222backend.vercel.app/shop", fetcher);
     const shop = data?.length > 0 ? data?.map(obj => Object.values(obj)) : [];
     if (error || !data) {
         return {
@@ -14,7 +14,7 @@ export const useShop = () => {
         }
     }
     const addShop = (product) => {
-        mutate("http://localhost:3000/shop", fetch("http://localhost:3000/shop", {
+        mutate("https://sneakers222backend.vercel.app/shop", fetch("https://sneakers222backend.vercel.app/shop", {
             method: "POST",
             headers: { "content-type": "application/json" },
             body: JSON.stringify(product),
@@ -24,8 +24,8 @@ export const useShop = () => {
 
         product?.forEach((obj) => {
             mutate(
-                "http://localhost:3000/basket",
-                fetch(`http://localhost:3000/basket/${obj.id}`, {
+                "https://sneakers222backend.vercel.app/basket",
+                fetch(`https://sneakers222backend.vercel.app/basket/${obj.id}`, {
                     method: "DELETE",
                 }),
                 {

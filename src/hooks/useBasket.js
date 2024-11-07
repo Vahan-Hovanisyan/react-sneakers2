@@ -2,7 +2,7 @@ import useSWR, { mutate } from "swr";
 import { fetcher } from "../helper/fetcher";
 
 export const useBasket = () => {
-    const { data, error, mutate } = useSWR("http://localhost:3000/basket", fetcher);
+    const { data, error, mutate } = useSWR("https://sneakers222backend.vercel.app/basket", fetcher);
     const basket = data?.length > 0 ? data : [];
 
     if (error || !data) {
@@ -20,7 +20,7 @@ export const useBasket = () => {
     };
 
     const removeProduct = (id) => {
-        mutate(fetch(`http://localhost:3000/basket/${id}`, {
+        mutate(fetch(`https://sneakers222backend.vercel.app/basket/${id}`, {
             method: "DELETE",
         }));
 
@@ -30,7 +30,7 @@ export const useBasket = () => {
         if (isFindProduct(product.id)) {
             removeProduct(product.id);
         } else {
-            mutate(fetch("http://localhost:3000/basket", {
+            mutate(fetch("https://sneakers222backend.vercel.app/basket", {
                 method: "POST",
                 headers: { "content-type": "application/json" },
                 body: JSON.stringify(product),

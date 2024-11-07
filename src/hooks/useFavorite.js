@@ -5,7 +5,7 @@ export const useFavorite = () => {
 
 
 
-    const { data, error, mutate } = useSWR("http://localhost:3000/favorite", fetcher);  
+    const { data, error, mutate } = useSWR("https://sneakers222backend.vercel.app/favorite", fetcher);  
     
     const favorites = data?.length > 0 ? data : [];
 
@@ -21,7 +21,7 @@ export const useFavorite = () => {
 
     const removeFavorite = (id) => {
         mutate(
-            fetcher(`http://localhost:3000/favorite/${id}`, {
+            fetcher(`https://sneakers222backend.vercel.app/favorite/${id}`, {
             method: "DELETE",
             
         }), { populateCache: false } 
@@ -40,7 +40,7 @@ export const useFavorite = () => {
         }
 
         mutate(
-            fetcher("http://localhost:3000/favorite", {
+            fetcher("https://sneakers222backend.vercel.app/favorite", {
                 method: "POST",
                 headers: { "content-type": "application/json"},
                 body: JSON.stringify(product),
