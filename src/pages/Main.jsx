@@ -2,8 +2,9 @@ import React from "react";
 import { Catalog, Slider } from "@/components";
 import { useProducts } from "@/hooks/useProducts";
 
- const Main = () => {
+export const Main = () => {
   const { products } = useProducts();
+  console.log( products );
   return (
     <main>
       <Slider />
@@ -14,4 +15,3 @@ import { useProducts } from "@/hooks/useProducts";
   );
 };
 
-export default Main

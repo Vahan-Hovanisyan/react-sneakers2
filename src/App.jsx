@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Main, Favorite, Shop, NotFound } from "./pages";
 
 function App() {
+
+
   return (
     <Router>
         <Basket />

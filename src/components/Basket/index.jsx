@@ -5,7 +5,7 @@ import { useBasket } from "@/hooks/useBasket";
 import { useShop } from "@/hooks/useShop";
 import { isShowBasket } from "@/store/isShowBasket";
 
- export const Basket = (props) => {
+ export const Basket = () => {
   const [isBuy, SetIsBuy] = useState(false);
   const { basket, removeProduct, total, totalPrice } = useBasket();
   const { addShop, shopProductsLength } = useShop();

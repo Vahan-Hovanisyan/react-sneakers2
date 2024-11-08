@@ -3,12 +3,11 @@ import { fetcher } from "../helper/fetcher";
 
 export const useFavorite = () => {
 
-
-
-    const { data, error, mutate } = useSWR("https://sneakers222backend.vercel.app/favorite", fetcher);  
+    const { data, error, mutate } = useSWR(`${import.meta.env.VITE_PORT}/favorite`, fetcher,{
+        revalidateOnFocus: false
+    });  
     
     const favorites = data?.length > 0 ? data : [];
-
 
     if(error || !data) {
         return {
@@ -20,12 +19,12 @@ export const useFavorite = () => {
     }
 
     const removeFavorite = (id) => {
-        mutate(
-            fetcher(`https://sneakers222backend.vercel.app/favorite/${id}`, {
+        fetcher(`${import.meta.env.VITE_PORT}/favorite/${id}`, {
             method: "DELETE",
-            
-        }), { populateCache: false } 
-          
+        })
+        mutate(
+            favorites.filter(item => item.id !== id)
+            , { revalidate: false } 
         )      
     };   
 
@@ -39,13 +38,15 @@ export const useFavorite = () => {
             return;
         }
 
-        mutate(
-            fetcher("https://sneakers222backend.vercel.app/favorite", {
+        fetcher(`${import.meta.env.VITE_PORT}/favorite`, {
                 method: "POST",
                 headers: { "content-type": "application/json"},
                 body: JSON.stringify(product),
-            }),
-            { populateCache: false }     
+        })
+        mutate(
+            favorites.concat(product)
+            ,
+            { revalidate: false }     
         )
     }
 

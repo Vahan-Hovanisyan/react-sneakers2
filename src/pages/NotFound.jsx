@@ -1,6 +1,6 @@
 import { Empty } from "@/components";
 
-const NotFound = () => {
+export const NotFound = () => {
   return (
     <Empty
       title="404"
@@ -9,5 +9,3 @@ const NotFound = () => {
     />
   )
 }
-
-export default NotFound

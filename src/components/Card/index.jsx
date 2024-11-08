@@ -11,6 +11,8 @@ import { useBasket } from "@/hooks/useBasket";
 
   const { addProduct, isFindProduct } = useBasket();
 
+  console.log( isFindProduct(id) );
+
   return (
     <article className={styles.item}>
       <button
@@ -18,7 +20,7 @@ import { useBasket } from "@/hooks/useBasket";
           styles.favoriteButton,
           isFindFavorite(id) === id && styles.favoriteButtonActive
         )}
-        onClick={() => addFavorite({ id, img, title, price })}
+        onClick={() => addFavorite({ id,currentId: id, img, title, price })}
       >
         <Icon className={styles.favorite} id="favorite" />
       </button>
@@ -30,11 +32,12 @@ import { useBasket } from "@/hooks/useBasket";
         <button
           className={clsx(
             styles.plusButton,
-            isFindProduct(id) === id && styles.plusButtonActive
+            isFindProduct(id, true) === id && styles.plusButtonActive
           )}
           onClick={() => {
             addProduct({
               id,
+              currentId: id,
               img,
               title,
               price,

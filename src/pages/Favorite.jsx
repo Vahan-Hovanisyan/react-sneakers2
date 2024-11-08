@@ -2,7 +2,7 @@ import React from "react";
 import {Catalog,Empty} from "@/components";
 import { useFavorite } from "@/hooks/useFavorite";
 
- const Favorite = () => {
+export const Favorite = () => {
   const { favorites } = useFavorite();
 
   return (
@@ -23,5 +23,3 @@ import { useFavorite } from "@/hooks/useFavorite";
     </main>
   );
 };
-
-export default Favorite

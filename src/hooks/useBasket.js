@@ -2,7 +2,9 @@ import useSWR, { mutate } from "swr";
 import { fetcher } from "../helper/fetcher";
 
 export const useBasket = () => {
-    const { data, error, mutate } = useSWR("https://sneakers222backend.vercel.app/basket", fetcher);
+    const { data, error, mutate } = useSWR(`${import.meta.env.VITE_PORT}/basket`, fetcher,{
+        revalidateOnFocus: false
+    });
     const basket = data?.length > 0 ? data : [];
 
     if (error || !data) {
@@ -15,29 +17,35 @@ export const useBasket = () => {
             error: error
         }
     }
-    const isFindProduct = (id) => {
-        return basket.find((item) => item.id === id)?.id;
+    const isFindProduct = (id, toggle = false) => {
+        if (!toggle) return basket.find((item) => item.id === id)?.currentId;
+        return basket.find((item) => item.currentId === id)?.id;
     };
 
     const removeProduct = (id) => {
-        mutate(fetch(`https://sneakers222backend.vercel.app/basket/${id}`, {
+        fetcher(`${import.meta.env.VITE_PORT}/basket/${id}`, {
             method: "DELETE",
-        }));
+        })
+        mutate(
+            basket.filter(item => item.currentId !== id),
+            { revalidate: false }
+        );
 
     };
     const addProduct = (product) => {
 
         if (isFindProduct(product.id)) {
-            removeProduct(product.id);
+            removeProduct(isFindProduct(product.id));
         } else {
-            mutate(fetch("https://sneakers222backend.vercel.app/basket", {
+           fetcher(`${import.meta.env.VITE_PORT}/basket`, {
                 method: "POST",
                 headers: { "content-type": "application/json" },
                 body: JSON.stringify(product),
-            }),
-                { populateCache: false }
+            })
+            mutate(
+              basket.concat(product),
+              { revalidate: false }
             );
-
         }
     };
     const totalPrice = basket.reduce((sum, item) => item.price + sum, 0);
