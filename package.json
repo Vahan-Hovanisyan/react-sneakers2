@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "server": "npx json-server db.json",
-    "build": "concurrently \"vite build\" \"npx json-server db.json\"",
+    "build": "concurrently \"vite build\" \"json-server --watch db.json\"",
     "lint": "eslint .",
     "preview": "concurrently \"vite preview\" \"json-server --watch db.json\""
   },
