@@ -27,7 +27,7 @@ export const useBasket = () => {
             method: "DELETE",
         })
         mutate(
-            basket.filter(item => item.currentId !== id),
+            basket?.filter(item => item.currentId !== id),
             { revalidate: false }
         );
 
@@ -48,7 +48,7 @@ export const useBasket = () => {
             );
         }
     };
-    const totalPrice = basket.reduce((sum, item) => item.price + sum, 0);
+    const totalPrice = basket?.reduce((sum, item) => item.price + sum, 0);
     const total = totalPrice * 5 / 100
     return {
         removeProduct,

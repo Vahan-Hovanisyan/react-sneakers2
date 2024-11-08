@@ -23,7 +23,7 @@ export const useFavorite = () => {
             method: "DELETE",
         })
         mutate(
-            favorites.filter(item => item.id !== id)
+            favorites?.filter(item => item.id !== id)
             , { revalidate: false } 
         )      
     };   
