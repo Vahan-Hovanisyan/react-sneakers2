@@ -4,51 +4,64 @@ import clsx from "clsx";
 import {Icon} from "../index";
 import { useFavorite } from "@/hooks/useFavorite";
 import { useBasket } from "@/hooks/useBasket";
+import { useLocation } from "react-router-dom";
 
  export function Card(props) {
-  const { addFavorite, isFindFavorite } = useFavorite();
+  const [loading, setLoading] = useState(false);
+  const [loadingFavorite, setLoadingFavorite] = useState(false);
+  const { addFavorite, isSomeFavorite, removeFavorite } = useFavorite();
   const { id, img, title, price } = props;
-
-  const { addProduct, isFindProduct } = useBasket();
-
-  console.log( isFindProduct(id) );
+  const location = useLocation().pathname;
+  const { addProduct, isSomeProduct} = useBasket();
 
   return (
     <article className={styles.item}>
-      <button
-        className={clsx(
-          styles.favoriteButton,
-          isFindFavorite(id) === id && styles.favoriteButtonActive
-        )}
-        onClick={() => addFavorite({ id,currentId: id, img, title, price })}
-      >
-        <Icon className={styles.favorite} id="favorite" />
-      </button>
+      {location !== "/shop" &&
+        <button
+          className={clsx(
+            styles.favoriteButton,
+            loadingFavorite && styles.favoriteButtonLoading,
+            isSomeFavorite(id) && styles.favoriteButtonActive
+          )}
+          onClick={() => {
+            !isSomeFavorite(id) ? setLoadingFavorite(true) : setLoadingFavorite(false);
+  
+            location === "/favorite" ? 
+              removeFavorite(id, true) : 
+              addFavorite({ productId: id, img, title, price })}
+          }
+        >
+          <Icon className={styles.favorite} id="favorite" />
+        </button>
+      }
       <img className={styles.img} src={img} alt="sneakers" />
       <h3 className={styles.itemTitle}>{title}</h3>
       <div className={styles.wrapper}>
         <span className={styles.span}>Цена:</span>
         <span className={styles.price}>{price} руб.</span>
-        <button
-          className={clsx(
-            styles.plusButton,
-            isFindProduct(id, true) === id && styles.plusButtonActive
-          )}
-          onClick={() => {
-            addProduct({
-              id,
-              currentId: id,
-              img,
-              title,
-              price,
-            });
-          }}
-        >
-          <Icon
-            className={styles.plus}
-            id={isFindProduct(id) === id ? "checked" : "plus"}
-          />
-        </button>
+      {location !== "/shop" &&
+          <button
+            className={clsx(
+              styles.plusButton,
+              loading && styles.plusButtonLoading,
+              isSomeProduct(id) && styles.plusButtonActive
+            )}
+            onClick={() => {
+              !isSomeProduct(id) ? setLoading(true) : setLoading(false);
+              addProduct({
+                productId: id,
+                img,
+                title,
+                price,
+              });
+            }}
+          >
+            <Icon
+              className={styles.plus}
+              id={isSomeProduct(id) ? "checked" : "plus"}
+            />
+          </button>
+        }
       </div>
     </article>
   );

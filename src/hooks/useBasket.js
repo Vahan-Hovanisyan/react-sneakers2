@@ -13,45 +13,54 @@ export const useBasket = () => {
             total: 0,
             addProduct: () => { },
             isFindProduct: () => { },
+            removeProduct: () => { },
+            isSomeProduct: () => { },
             basket: [],
             error: error
         }
     }
-    const isFindProduct = (id, toggle = false) => {
-        if (!toggle) return basket.find((item) => item.id === id)?.currentId;
-        return basket.find((item) => item.currentId === id)?.id;
+
+    const isFindProduct = (id) => {
+        return basket.find((item) => item.productId === id)?.id;
     };
 
-    const removeProduct = (id) => {
-        fetcher(`${import.meta.env.VITE_PORT}/basket/${id}`, {
+    const isSomeProduct = (id) => {
+        return basket.some((item) => item.productId === id);
+    };
+
+    const removeProduct = async (id, onClickToBasketProduct = false) => {
+        const removeProductId = isFindProduct(id);
+
+        await fetcher(`${import.meta.env.VITE_PORT}/basket/${ onClickToBasketProduct ? id : removeProductId}`, {
             method: "DELETE",
         })
         mutate(
-            basket?.filter(item => item.currentId !== id),
-            { revalidate: false }
+            basket?.filter(item => item.productId !== id)
         );
 
     };
-    const addProduct = (product) => {
+    const addProduct = async (product)  => {
 
-        if (isFindProduct(product.id)) {
-            removeProduct(isFindProduct(product.id));
-        } else {
-           fetcher(`${import.meta.env.VITE_PORT}/basket`, {
+        if (isSomeProduct(product.productId)) {
+            removeProduct(product.productId);
+            return;
+        } 
+        await fetcher(`${import.meta.env.VITE_PORT}/basket`, {
                 method: "POST",
                 headers: { "content-type": "application/json" },
                 body: JSON.stringify(product),
-            })
-            mutate(
-              basket.concat(product),
-              { revalidate: false }
-            );
-        }
+        })
+        mutate(
+            [...basket, product]
+        );
     };
-    const totalPrice = basket?.reduce((sum, item) => item.price + sum, 0);
+
+    const totalPrice = basket.reduce((sum, item) => item.price + sum, 0);
     const total = totalPrice * 5 / 100
+
     return {
         removeProduct,
+        isSomeProduct,
         totalPrice,
         total,
         addProduct,

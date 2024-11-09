@@ -37,24 +37,45 @@
     top: 30px;
 }
 
-.favoriteButtonActive {
-    background-color: #fef0f0;
+.favoriteButtonLoading {
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        width: 15px;
+        height: 15px;
+        border: 3px solid #FFF;
+        border-bottom-color: #FF3D00;
+        border-radius: 50%;
+        display: inline-block;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+    }
+}
 
+.favoriteButtonLoading .favorite {
+    display: none;
+}
+
+.favoriteButtonActive {
+    &::after {
+        content: "";
+        display: none;
+    }
+
+    background-color: #fef0f0;
 }
 
 .favoriteButtonActive .favorite {
     fill: #ff8585;
     color: #ff8585;
-
-
+    display: block;
 }
-
 
 .favorite {
     composes: icon;
     fill: none;
-
-
 }
 
 .img {
@@ -107,8 +128,47 @@
     grid-area: plus;
 }
 
+    @keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+    }
+
+.plusButtonLoading {
+    position: relative;
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        width: 15px;
+        height: 15px;
+        border: 3px solid #FFF;
+        border-bottom-color: #FF3D00;
+        border-radius: 50%;
+        display: inline-block;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+    }
+}
+
+.plusButtonLoading .plus {
+    display: none;
+}
+
 .plusButtonActive {
     background: linear-gradient(180deg, #89f09c 0%, #3cc755 100%);
+    &::after {
+        content: "";
+        display: none;
+    }
+}
+
+.plusButtonActive .plus {
+  display: block;
 }
 
 .item:hover {

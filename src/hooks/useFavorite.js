@@ -3,7 +3,7 @@ import { fetcher } from "../helper/fetcher";
 
 export const useFavorite = () => {
 
-    const { data, error, mutate } = useSWR(`${import.meta.env.VITE_PORT}/favorite`, fetcher,{
+    const { data, error, isLoading, mutate } = useSWR(`${import.meta.env.VITE_PORT}/favorite`, fetcher,{
         revalidateOnFocus: false
     });  
     
@@ -12,49 +12,59 @@ export const useFavorite = () => {
     if(error || !data) {
         return {
             addFavorite: () => {},
+            removeFavorite: () => {},
             isFindFavorite: () => {},
+            isSomeFavorite: () => {},
             favorites: [],
+            isLoading,
             error: error
         }
     }
 
-    const removeFavorite = (id) => {
-        fetcher(`${import.meta.env.VITE_PORT}/favorite/${id}`, {
+    const removeFavorite = async (id, onClickToFavoriteProduct = false) => {
+
+        const removeProductId = isFindFavorite(id);
+
+      await  fetcher(`${import.meta.env.VITE_PORT}/favorite/${ onClickToFavoriteProduct ? id : removeProductId}`, {
             method: "DELETE",
         })
         mutate(
-            favorites?.filter(item => item.id !== id)
-            , { revalidate: false } 
+            favorites?.filter(item => item.productId !== id)
         )      
     };   
 
     const isFindFavorite = (id) => {
-        return favorites?.find((item) => item.id === id)?.id;
+        return favorites?.find((item) => item.productId === id)?.id;
     };
 
-    const addFavorite = (product) => {
-        if(isFindFavorite(product.id)) {
-            removeFavorite(product.id);
+    const isSomeFavorite = (id) => {
+        return favorites?.some((item) => item.productId === id);
+    };
+
+    const addFavorite = async (product) => {
+        if(isSomeFavorite(product.productId)) {
+            removeFavorite(product.productId);
             return;
         }
 
-        fetcher(`${import.meta.env.VITE_PORT}/favorite`, {
+       await fetcher(`${import.meta.env.VITE_PORT}/favorite`, {
                 method: "POST",
                 headers: { "content-type": "application/json"},
                 body: JSON.stringify(product),
         })
         mutate(
-            favorites.concat(product)
-            ,
-            { revalidate: false }     
+            [...favorites, product]
         )
     }
 
 
     return { 
         addFavorite,
+        isSomeFavorite,
+        removeFavorite,
         isFindFavorite,
         favorites,
+        isLoading,
         error: error,
     };
 }   

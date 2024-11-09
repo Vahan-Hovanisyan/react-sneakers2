@@ -30,7 +30,7 @@ import { isShowBasket } from "@/store/isShowBasket";
                     </div>
                     <button
                       className={styles.buttonClose}
-                      onClick={() => removeProduct(item.id)}
+                      onClick={() => removeProduct(item.id, true)}
                     >
                       <Icon className={styles.icon} id={"close"} />
                     </button>

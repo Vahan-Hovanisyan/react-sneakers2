@@ -3,7 +3,7 @@ import { fetcher } from "../helper/fetcher";
 import { useSWRConfig } from "swr";
 export const useShop = () => {
     const { mutate } = useSWRConfig()
-    const { data, error, } = useSWR(`${import.meta.env.VITE_PORT}/shop`, fetcher,{
+    const { data, error, isLoading } = useSWR(`${import.meta.env.VITE_PORT}/shop`, fetcher,{
         revalidateOnFocus: false
     });
     const shop = data?.length > 0 ? data?.map(obj => Object.values(obj)) : [];
@@ -12,15 +12,16 @@ export const useShop = () => {
             shopProductsLength: 0,
             addShop: () => { },
             shop: [],
-            error: error
+            error: error,
+            isLoading
         }
     }
     const addShop = (product) => {
         mutate(`${import.meta.env.VITE_PORT}/shop`, 
-            fetch(`${import.meta.env.VITE_PORT}/shop`, {
+            fetcher(`${import.meta.env.VITE_PORT}/shop`, {
                 method: "POST",
                 headers: { "content-type": "application/json" },
-                body: JSON.stringify(product),
+                body: JSON.stringify({...product}),
             }),
             { populateCache: false }
         );
@@ -28,14 +29,12 @@ export const useShop = () => {
         product?.forEach((obj) => {
             mutate(
                 `${import.meta.env.VITE_PORT}/basket`,
-                fetch(`${import.meta.env.VITE_PORT}/basket/${obj.id}`, {
+                fetcher(`${import.meta.env.VITE_PORT}/basket/${obj.id}`, {
                     method: "DELETE",
-                }),
-                {
-                    populateCache: false,
-                }
+                })
+                
             );
-        });
+        })
 
     };
 
@@ -45,5 +44,6 @@ export const useShop = () => {
         addShop,
         shop,
         error,
+        isLoading
     }
 }
