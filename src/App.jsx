@@ -7,7 +7,6 @@ import { Main, Favorite, Shop, NotFound } from "./pages";
 
 function App() {
 
-
   return (
     <Router>
         <Basket />
