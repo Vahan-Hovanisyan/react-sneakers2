@@ -1,10 +1,10 @@
 import styles from "./header.module.css";
 import logoUrl from "@/Assets/logo.png";
-import {Icon} from "../index";
+import { Icon } from "../index";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useBasket } from "@/hooks/useBasket";
-import { isShowBasket } from "@/store/isShowBasket";
+import { isShowBasket } from "@/store/basket";
 
 const navLinks = [
   {
@@ -23,8 +23,7 @@ const navLinks = [
     text: "Профиль",
   },
 ];
- export const Header = (props) => {
-  // const { onClickBasketOpen } = props;
+export const Header = (props) => {
   const [navIsopen, setNavIsopen] = useState(false);
   const { totalPrice } = useBasket();
   const { setIsShow } = isShowBasket();
@@ -53,7 +52,10 @@ const navLinks = [
               <li className={styles.navItem} key={obj.text}>
                 <Link
                   className={styles.navLink}
-                  onClick={() => obj.id === "basket" && setIsShow()}
+                  onClick={() => {
+                    obj.id === "basket" && setIsShow();
+                    setNavIsopen(false);
+                  }}
                   to={obj.link}
                 >
                   <Icon id={obj.id} className={styles.icon} />
@@ -77,5 +79,3 @@ const navLinks = [
     </header>
   );
 };
-
-

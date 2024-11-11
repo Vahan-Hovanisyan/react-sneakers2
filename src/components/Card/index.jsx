@@ -1,59 +1,71 @@
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import styles from "./Card.module.css";
 import clsx from "clsx";
-import {Icon} from "../index";
+import { Icon } from "../index";
 import { useFavorite } from "@/hooks/useFavorite";
 import { useBasket } from "@/hooks/useBasket";
 import { useLocation } from "react-router-dom";
+import debounce from "lodash.debounce";
 
- export function Card(props) {
+export function Card(props) {
   const [loading, setLoading] = useState(false);
   const [loadingFavorite, setLoadingFavorite] = useState(false);
   const { addFavorite, isSomeFavorite, removeFavorite } = useFavorite();
   const { id, img, title, price } = props;
   const location = useLocation().pathname;
-  const { addProduct, isSomeProduct} = useBasket();
+  const { addProduct, isSomeProduct, removeProduct } = useBasket();
+
+  useEffect(() => {
+    setLoading(false);
+    setLoadingFavorite(false);
+  }, [isSomeProduct(id), isSomeFavorite(id)]);
+
+  const onClickToBasketProduct = useCallback(async () => {
+    await addProduct({ productId: id, img, title, price });
+    setLoading(false);
+  }, [addProduct]);
+
+  const onClickToFavoriteProduct = useCallback(async () => {
+    setLoadingFavorite(true);
+    await addFavorite({ productId: id, img, title, price });
+  }, []);
 
   return (
     <article className={styles.item}>
-      {location !== "/shop" &&
+      {location !== "/shop" && (
         <button
+          disabled={loadingFavorite}
           className={clsx(
             styles.favoriteButton,
             loadingFavorite && styles.favoriteButtonLoading,
-            isSomeFavorite(id) && styles.favoriteButtonActive
+            (isSomeFavorite(id) || location === "/favorite") &&
+              styles.favoriteButtonActive,
           )}
           onClick={() => {
-            !isSomeFavorite(id) ? setLoadingFavorite(true) : setLoadingFavorite(false);
-  
-            location === "/favorite" ? 
-              removeFavorite(id, true) : 
-              addFavorite({ productId: id, img, title, price })}
-          }
+            location === "/favorite"
+              ? removeFavorite(id, true)
+              : !isSomeFavorite(id) && onClickToFavoriteProduct();
+          }}
         >
           <Icon className={styles.favorite} id="favorite" />
         </button>
-      }
+      )}
       <img className={styles.img} src={img} alt="sneakers" />
       <h3 className={styles.itemTitle}>{title}</h3>
       <div className={styles.wrapper}>
         <span className={styles.span}>Цена:</span>
         <span className={styles.price}>{price} руб.</span>
-      {location !== "/shop" &&
+        {location !== "/shop" && (
           <button
+            disabled={loading}
             className={clsx(
               styles.plusButton,
               loading && styles.plusButtonLoading,
-              isSomeProduct(id) && styles.plusButtonActive
+              isSomeProduct(id) && styles.plusButtonActive,
             )}
             onClick={() => {
-              !isSomeProduct(id) ? setLoading(true) : setLoading(false);
-              addProduct({
-                productId: id,
-                img,
-                title,
-                price,
-              });
+              setLoading(true);
+              !isSomeProduct(id) && onClickToBasketProduct();
             }}
           >
             <Icon
@@ -61,10 +73,8 @@ import { useLocation } from "react-router-dom";
               id={isSomeProduct(id) ? "checked" : "plus"}
             />
           </button>
-        }
+        )}
       </div>
     </article>
   );
 }
-
-

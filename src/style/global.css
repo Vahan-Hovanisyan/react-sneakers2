@@ -5,19 +5,23 @@
 html {
     box-sizing: border-box;
     height: 100%;
-
 }
 
 body {
     font-family: var(--font-family);
     height: 100%;
     margin: 0;
-    background-color: #e7f6FF;
+    background-color: #e7f6ff;
 }
 
 #root {
-    padding-top: 85px;;
     height: 100%;
+}
+
+@media (min-width: 768px) {
+    #root {
+        padding-top: 85px;
+    }
 }
 
 a {
@@ -29,8 +33,8 @@ a {
 img {
     max-width: 100%;
     height: auto;
-
 }
+
 .container {
-   background-color: #FFF;
+    background-color: #fff;
 }

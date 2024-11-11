@@ -1,7 +1,6 @@
-import {Icon} from "../index";
+import { Icon } from "../index";
 import styles from "./search.module.css";
- export const Search = (props) => {
-  // eslint-disable-next-line react/prop-types
+export const Search = (props) => {
   const { value, setValue } = props;
   const onChange = (event) => {
     setValue(event.target.value);
@@ -19,5 +18,3 @@ import styles from "./search.module.css";
     </label>
   );
 };
-
-

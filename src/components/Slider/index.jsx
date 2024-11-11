@@ -1,7 +1,6 @@
 import { Navigation } from "swiper/modules";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import styles from "./Slider.module.css";
@@ -28,15 +27,11 @@ const slides = [
     img: "img/frog.png",
   },
 ];
- export const Slider = () => {
+
+export const Slider = () => {
   return (
     <div className={styles.container}>
-      <Swiper
-        // install Swiper modules
-        modules={[Navigation]}
-        navigation
-        className={styles.slider}
-      >
+      <Swiper modules={[Navigation]} navigation className={styles.slider}>
         {slides.map((obj, index) => (
           <SwiperSlide className={styles.slide} key={index}>
             <div className={styles.content}>
@@ -52,10 +47,7 @@ const slides = [
             </div>
           </SwiperSlide>
         ))}
-        ...
       </Swiper>
     </div>
   );
 };
-
-
