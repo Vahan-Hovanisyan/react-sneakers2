@@ -1,8 +1,15 @@
 .container {
     max-width: 1080px;
     margin: 0 auto;
-    padding: 0 40px;
-    background-color: #FFF;
+    padding-inline: 20px;
+    padding: 0 20px;
+    background-color: #fff;
+}
+
+@media (min-width: 768px) {
+    .container {
+        padding: 0 40px;
+    }
 }
 
 .title {

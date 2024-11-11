@@ -26,8 +26,8 @@ export function Card(props) {
   }, [addProduct]);
 
   const onClickToFavoriteProduct = useCallback(async () => {
-    setLoadingFavorite(true);
     await addFavorite({ productId: id, img, title, price });
+    setLoadingFavorite(false);
   }, []);
 
   return (
@@ -42,8 +42,9 @@ export function Card(props) {
               styles.favoriteButtonActive,
           )}
           onClick={() => {
+            setLoadingFavorite(true);
             location === "/favorite"
-              ? removeFavorite(id, true)
+              ? removeFavorite(id)
               : !isSomeFavorite(id) && onClickToFavoriteProduct();
           }}
         >

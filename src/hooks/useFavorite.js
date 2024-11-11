@@ -24,8 +24,8 @@ export const useFavorite = () => {
     };
   }
 
-  const removeFavorite = async (id, onClickToFavoriteProduct = false) => {
-    const removeProductId = isFindFavorite(id);
+  const removeFavorite = async (id) => {
+    const removeProductId = isSomeFavorite(id) ? isFindFavorite(id) : id;
 
     await fetcher(
       `${import.meta.env.VITE_PORT}/favorite/${onClickToFavoriteProduct ? id : removeProductId}`,
