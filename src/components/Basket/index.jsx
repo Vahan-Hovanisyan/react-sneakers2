@@ -8,7 +8,7 @@ import clsx from "clsx";
 import Card from "./Card";
 
 export const Basket = () => {
-  const [isBuy, SetIsBuy] = useState(false);
+  const [isBuy, setIsBuy] = useState(false);
   const {
     basket,
     removeProduct,
@@ -20,12 +20,14 @@ export const Basket = () => {
   const { addShop, shopProductsLength } = useShop();
   const { setIsShow, isShow } = isShowBasket();
 
-  const onClickBuy = useCallback(async () => {
-    setLoading(true);
+  const onClickBuy = async () => {
+    setIsBuy(true);
     await addShop(basket);
-    setLoading(false);
-    SetIsBuy(true);
-  }, [basket, addShop]);
+  };
+
+  useEffect(() => {
+    return () => setIsBuy(false);
+  }, [isShow]);
 
   return (
     <>
@@ -57,11 +59,10 @@ export const Basket = () => {
                       </li>
                     </ul>
                     <button
+                      disabled={isBuy}
+                      style={{ backgroundColor: isBuy && "grey" }}
                       className={styles.buttonConfirm}
-                      onClick={() => {
-                        addShop(basket);
-                        SetIsBuy(true);
-                      }}
+                      onClick={onClickBuy}
                     >
                       Оформить заказ
                       <Icon className={styles.arrowRight} id={"arrowRight"} />

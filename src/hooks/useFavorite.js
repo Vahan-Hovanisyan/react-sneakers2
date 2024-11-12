@@ -11,7 +11,7 @@ export const useFavorite = () => {
   );
 
   const favorites = data?.length > 0 ? data : [];
-
+  // console.log(favorites);
   if (error || !data) {
     return {
       addFavorite: () => {},

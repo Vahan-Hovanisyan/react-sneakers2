@@ -20,23 +20,29 @@ export const useShop = () => {
       isLoading,
     };
   }
-  const addShop = (product) => {
-    mutate(
-      `${import.meta.env.VITE_PORT}/shop`,
-      fetcher(`${import.meta.env.VITE_PORT}/shop`, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ ...product }),
-      }),
-    );
 
-    product?.forEach((obj) => {
-      mutate(
-        `${import.meta.env.VITE_PORT}/basket`,
-        fetcher(`${import.meta.env.VITE_PORT}/basket/${obj.id}`, {
-          method: "DELETE",
-        }),
-      );
+  const isSomeShopProduct = (id) => {
+    return shop.some((item) => item.id === id);
+  };
+
+  const isFindShopProduct = (id) => {
+    return shop.find((item) => item.id === id)?.id;
+  };
+
+  const addShop = async (product) => {
+    await fetcher(`${import.meta.env.VITE_PORT}/shop`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ ...product }),
+    });
+
+    mutate(`${import.meta.env.VITE_PORT}/shop`, [...shop, { ...product }]);
+
+    product?.forEach(async (obj) => {
+      await fetcher(`${import.meta.env.VITE_PORT}/basket/${obj.id}`, {
+        method: "DELETE",
+      }),
+        mutate(`${import.meta.env.VITE_PORT}/basket`, []);
     });
   };
 
