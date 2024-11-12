@@ -33,23 +33,15 @@ export const useBasket = () => {
   };
 
   const removeProduct = async (id) => {
-    if (!isSomeProduct(id)) {
-      return;
-    }
-
-    const removeProductId = isSomeProduct(id) ? isFindProduct(id) : id;
-
-    await fetcher(`${import.meta.env.VITE_PORT}/basket/${removeProductId}`, {
+    await fetcher(`${import.meta.env.VITE_PORT}/basket/${id}`, {
       method: "DELETE",
     });
 
-    mutate(basket.filter((item) => item.productId !== removeProductId));
+    mutate(basket.filter((item) => item.id !== id));
   };
 
   const addProduct = async (product) => {
-    if (isSomeProduct(product.productId)) {
-      return;
-    }
+    if (isSomeProduct(product.productId)) return;
     await fetcher(`${import.meta.env.VITE_PORT}/basket`, {
       method: "POST",
       headers: { "content-type": "application/json" },

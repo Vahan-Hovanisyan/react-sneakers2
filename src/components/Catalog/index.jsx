@@ -18,8 +18,7 @@ export const Catalog = (props) => {
     )
     .map((obj) => (
       <li key={obj.id}>
-        {" "}
-        <Card {...obj} />{" "}
+        <Card {...obj} />
       </li>
     ));
 

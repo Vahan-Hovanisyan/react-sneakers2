@@ -1,17 +1,18 @@
 import React from "react";
-import {Catalog,Empty} from "@/components";
+import { Catalog, Empty } from "@/components";
 import { useFavorite } from "@/hooks/useFavorite";
 
 export const Favorite = () => {
-  const { favorites, isLoading } = useFavorite();
+  const { favorites, isLoading, error } = useFavorite();
+
+  if (error) {
+    return <div> failed to load </div>;
+  }
 
   return (
     <main>
       {favorites.length > 0 ? (
-        <Catalog
-          products={favorites}
-          isLoading={isLoading}
-        >
+        <Catalog products={favorites} isLoading={isLoading}>
           <h2>все закладки</h2>
         </Catalog>
       ) : (

@@ -1,4 +1,4 @@
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 import { fetcher } from "../helper/fetcher";
 
 export const useFavorite = () => {
@@ -24,18 +24,6 @@ export const useFavorite = () => {
     };
   }
 
-  const removeFavorite = async (id) => {
-    const removeProductId = isSomeFavorite(id) ? isFindFavorite(id) : id;
-
-    await fetcher(
-      `${import.meta.env.VITE_PORT}/favorite/${onClickToFavoriteProduct ? id : removeProductId}`,
-      {
-        method: "DELETE",
-      },
-    );
-    mutate(favorites?.filter((item) => item.productId !== id));
-  };
-
   const isFindFavorite = (id) => {
     return favorites?.find((item) => item.productId === id)?.id;
   };
@@ -44,11 +32,15 @@ export const useFavorite = () => {
     return favorites?.some((item) => item.productId === id);
   };
 
-  const addFavorite = async (product) => {
-    if (isSomeFavorite(product.productId)) {
-      return;
-    }
+  const removeFavorite = async (id) => {
+    await fetcher(`${import.meta.env.VITE_PORT}/favorite/${id}`, {
+      method: "DELETE",
+    });
+    mutate(favorites.filter((item) => item.id !== id));
+  };
 
+  const addFavorite = async (product) => {
+    if (isSomeFavorite(product.productId)) return;
     await fetcher(`${import.meta.env.VITE_PORT}/favorite`, {
       method: "POST",
       headers: { "content-type": "application/json" },

@@ -3,7 +3,12 @@ import { Catalog, Slider } from "@/components";
 import { useProducts } from "@/hooks/useProducts";
 
 export const Main = () => {
-  const { products, isLoading } = useProducts();
+  const { products, isLoading, error } = useProducts();
+
+  if (error) {
+    return <div> failed to load </div>;
+  }
+
   return (
     <main>
       <Slider />
@@ -13,4 +18,3 @@ export const Main = () => {
     </main>
   );
 };
-

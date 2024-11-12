@@ -5,30 +5,31 @@ import { Icon } from "../index";
 import { useFavorite } from "@/hooks/useFavorite";
 import { useBasket } from "@/hooks/useBasket";
 import { useLocation } from "react-router-dom";
-import debounce from "lodash.debounce";
 
 export function Card(props) {
   const [loading, setLoading] = useState(false);
   const [loadingFavorite, setLoadingFavorite] = useState(false);
   const { addFavorite, isSomeFavorite, removeFavorite } = useFavorite();
-  const { id, img, title, price } = props;
+  const { id, img, title, price, productId } = props;
   const location = useLocation().pathname;
   const { addProduct, isSomeProduct, removeProduct } = useBasket();
 
-  useEffect(() => {
-    setLoading(false);
-    setLoadingFavorite(false);
-  }, [isSomeProduct(id), isSomeFavorite(id)]);
-
-  const onClickToBasketProduct = useCallback(async () => {
+  const onClickToBasketProduct = async () => {
+    if (isSomeProduct(id)) return;
+    setLoading(true);
     await addProduct({ productId: id, img, title, price });
     setLoading(false);
-  }, [addProduct]);
+  };
 
-  const onClickToFavoriteProduct = useCallback(async () => {
-    await addFavorite({ productId: id, img, title, price });
+  const onClickToFavoriteProduct = async () => {
+    setLoadingFavorite(true);
+    if (isSomeFavorite(productId) || location === "/favorite") {
+      await removeFavorite(id);
+    } else {
+      await addFavorite({ productId: id, img, title, price });
+    }
     setLoadingFavorite(false);
-  }, []);
+  };
 
   return (
     <article className={styles.item}>
@@ -41,12 +42,7 @@ export function Card(props) {
             (isSomeFavorite(id) || location === "/favorite") &&
               styles.favoriteButtonActive,
           )}
-          onClick={() => {
-            setLoadingFavorite(true);
-            location === "/favorite"
-              ? removeFavorite(id)
-              : !isSomeFavorite(id) && onClickToFavoriteProduct();
-          }}
+          onClick={onClickToFavoriteProduct}
         >
           <Icon className={styles.favorite} id="favorite" />
         </button>
@@ -64,10 +60,7 @@ export function Card(props) {
               loading && styles.plusButtonLoading,
               isSomeProduct(id) && styles.plusButtonActive,
             )}
-            onClick={() => {
-              setLoading(true);
-              !isSomeProduct(id) && onClickToBasketProduct();
-            }}
+            onClick={onClickToBasketProduct}
           >
             <Icon
               className={styles.plus}

@@ -9,7 +9,6 @@
     height: 32px;
 }
 
-
 .icon {
     width: 12px;
     height: 12px;
@@ -23,10 +22,10 @@
     border: 1px solid #9d9d9d;
     border-radius: 40px;
     padding: 35px;
-    transition: 0.3s transform, 0.3s box-shadow;
+    transition:
+        0.3s transform,
+        0.3s box-shadow;
     margin-bottom: 60px;
-    ;
-
     /* justify-content: space-between; */
 }
 
@@ -35,27 +34,6 @@
     position: absolute;
     left: 30px;
     top: 30px;
-}
-
-.favoriteButtonLoading {
-    &::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        margin: auto;
-        width: 15px;
-        height: 15px;
-        border: 3px solid #FFF;
-        border-bottom-color: #FF3D00;
-        border-radius: 50%;
-        display: inline-block;
-        box-sizing: border-box;
-        animation: rotation 1s linear infinite;
-    }
-}
-
-.favoriteButtonLoading .favorite {
-    display: none;
 }
 
 .favoriteButtonActive {
@@ -78,10 +56,30 @@
     fill: none;
 }
 
-.img {
-    width: 133px;
-    height: 112px;
+.favoriteButtonLoading {
+    .img {
+        width: 133px;
+        height: 112px;
+    }
 
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        width: 15px;
+        height: 15px;
+        border: 3px solid #fff;
+        border-bottom-color: #ff3d00;
+        border-radius: 50%;
+        display: inline-block;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+    }
+}
+
+.favoriteButtonLoading .favorite {
+    display: none;
 }
 
 .itemTitle {
@@ -91,12 +89,11 @@
     font-size: 14px;
     color: var(--main-color);
     margin-bottom: 14px;
-
 }
-
 
 .wrapper {
     display: inline-grid;
+
     align-items: center;
     justify-content: space-between;
     row-gap: 4px;
@@ -128,17 +125,19 @@
     grid-area: plus;
 }
 
-    @keyframes rotation {
+@keyframes rotation {
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }
-    }
+}
 
 .plusButtonLoading {
     position: relative;
+
     &::after {
         content: "";
         position: absolute;
@@ -146,8 +145,8 @@
         margin: auto;
         width: 15px;
         height: 15px;
-        border: 3px solid #FFF;
-        border-bottom-color: #FF3D00;
+        border: 3px solid #fff;
+        border-bottom-color: #ff3d00;
         border-radius: 50%;
         display: inline-block;
         box-sizing: border-box;
@@ -161,6 +160,7 @@
 
 .plusButtonActive {
     background: linear-gradient(180deg, #89f09c 0%, #3cc755 100%);
+
     &::after {
         content: "";
         display: none;
@@ -168,7 +168,7 @@
 }
 
 .plusButtonActive .plus {
-  display: block;
+    display: block;
 }
 
 .item:hover {

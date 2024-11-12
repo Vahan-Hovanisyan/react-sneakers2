@@ -7,13 +7,12 @@ import { useBasket } from "@/hooks/useBasket";
 const Card = (props) => {
   const { title, price, img, productId, id } = props;
   const [loading, setLoading] = useState(false);
-
   const { removeProduct } = useBasket();
 
-  const onClickToRemove = useCallback(
-    (id) => removeProduct(id),
-    [removeProduct],
-  );
+  const onClickRemove = () => {
+    setLoading(true);
+    removeProduct(id);
+  };
 
   return (
     <div className={styles.cartItem} key={id}>
@@ -25,10 +24,7 @@ const Card = (props) => {
       <button
         disabled={loading}
         className={clsx(styles.buttonClose, loading && styles.loading)}
-        onClick={() => {
-          setLoading(true);
-          onClickToRemove(productId);
-        }}
+        onClick={onClickRemove}
       >
         <Icon className={styles.icon} id={"close"} />
       </button>
