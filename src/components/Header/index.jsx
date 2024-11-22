@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useBasket } from "@/hooks/useBasket";
 import { isShowBasket } from "@/store/basket";
+// import { useShop } from "@/hooks/useShop";
 
 const navLinks = [
   {
